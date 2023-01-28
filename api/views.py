@@ -66,12 +66,7 @@ def enroll_student(request, student_id, subject_id):
 @api_view(['GET'])
 def all_teachers(request, student_id):
     if request.method == 'GET':
-        try:
-            sub = SubjectStudentMap.objects.filter(student_id=student_id)
-            tea = Teacher.objects.filter(subject_id__in=sub.values_list('subject_id', flat=True).distinct())
-            serializer = TeacherSerializer(tea, many=True)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Student.DoesNotExist:
-            return Response({"Error":"student id does not exist"},status=status.HTTP_404_NOT_FOUND)
-
-        
+        sub = SubjectStudentMap.objects.filter(student_id=student_id)
+        tea = Teacher.objects.filter(subject_id__in=sub.values_list('subject_id', flat=True).distinct())
+        serializer = TeacherSerializer(tea, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)      
